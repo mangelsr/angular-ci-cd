@@ -7,7 +7,7 @@ import { CreateProductDTO, UpdateProductDTO } from '../models/product.model';
 import { generateManyProducts, generateOneProduct } from '../models/product.mock';
 import { ProductsService } from './products.service';
 
-fdescribe('ProductsService', () => {
+describe('ProductsService', () => {
   let service: ProductsService;
   let httpController: HttpTestingController;
 
