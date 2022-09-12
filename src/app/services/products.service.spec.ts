@@ -73,6 +73,14 @@ fdescribe('ProductsService', () => {
           ...generateOneProduct(),
           price: 200,
         },
+        {
+          ...generateOneProduct(),
+          price: 0,
+        },
+        {
+          ...generateOneProduct(),
+          price: -100,
+        },
       ];
 
       // Act
@@ -80,6 +88,8 @@ fdescribe('ProductsService', () => {
         // Assert
         expect(data[0].taxes).toEqual(19);
         expect(data[1].taxes).toEqual(38);
+        expect(data[2].taxes).toEqual(0);
+        expect(data[3].taxes).toEqual(0);
         doneFn();
       });
 
@@ -87,6 +97,29 @@ fdescribe('ProductsService', () => {
       const url = `${environment.API_URL}/api/v1/products`;
       const req = httpController.expectOne(url);
       req.flush(mockData);
+      httpController.verify();
+    });
+
+    it('should send query params with limit 10 and offset 2', (doneFn) => {
+      // Arrange
+      const mockData = generateManyProducts(5);
+      const limit = 10;
+      const offset = 3;
+
+      // Act
+      service.getAll(limit, offset).subscribe((data) => {
+        // Assert
+        expect(data.length).toEqual(mockData.length);
+        doneFn();
+      });
+
+      // HTTP Config
+      const url = `${environment.API_URL}/api/v1/products?limit=${limit}&offset=${offset}`;
+      const req = httpController.expectOne(url);
+      req.flush(mockData);
+      const params = req.request.params;
+      expect(params.get('limit')).toEqual(`${limit}`);
+      expect(params.get('offset')).toEqual(`${offset}`);
       httpController.verify();
     });
 
