@@ -1,23 +1,35 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpStatusCode } from '@angular/common/http';
+import { HttpStatusCode, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../environments/environment';
 import { CreateProductDTO, UpdateProductDTO } from '../models/product.model';
 import { generateManyProducts, generateOneProduct } from '../models/product.mock';
 import { ProductsService } from './products.service';
+import { TokenInterceptor } from '../interceptors/token.interceptor';
+import { TokenService } from './token.service';
 
 describe('ProductsService', () => {
   let service: ProductsService;
   let httpController: HttpTestingController;
+  let tokenService: TokenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
-      providers: [ ProductsService ],
+      providers: [
+        ProductsService,
+        TokenService,
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: TokenInterceptor,
+          multi: true,
+        },
+      ],
     });
     service = TestBed.inject(ProductsService);
     httpController = TestBed.inject(HttpTestingController);
+    tokenService = TestBed.inject(TokenService);
   });
 
   afterEach(() => {
@@ -31,7 +43,9 @@ describe('ProductsService', () => {
   describe('tests for getAllSimple', () => {
     it('should return product list', (doneFn) => {
       // Arrange
+      const mockToken = '123'
       const mockData = generateManyProducts(5);
+      spyOn(tokenService, 'getToken').and.returnValue(mockToken);
 
       // Act
       service.getAllSimple().subscribe((data) => {
@@ -43,6 +57,7 @@ describe('ProductsService', () => {
       // HTTP Config
       const url = `${environment.API_URL}/api/v1/products`;
       const req = httpController.expectOne(url);
+      expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`)
       req.flush(mockData);
     });
 
