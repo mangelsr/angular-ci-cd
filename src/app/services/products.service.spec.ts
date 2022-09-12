@@ -183,4 +183,25 @@ fdescribe('ProductsService', () => {
     });
   });
 
+
+  describe('tests for delete', () => {
+    it('should delete a product', (doneFn) => {
+      // Arrange
+      const mockResponse = true;
+      const productId = '1';
+
+      // Act
+      service.delete(productId).subscribe((data) => {
+        // Asssert
+        expect(data).toBe(mockResponse);
+        doneFn();
+      });
+
+      // HTTP Config
+      const url = `${environment.API_URL}/api/v1/products/${productId}`;
+      const req = httpController.expectOne(url);
+      expect(req.request.method).toEqual('DELETE');
+      req.flush(mockResponse);
+    });
+  });
 });
