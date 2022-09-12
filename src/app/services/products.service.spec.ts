@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../environments/environment';
+import { CreateProductDTO } from '../models/product.model';
 import { generateManyProducts, generateOneProduct } from '../models/product.mock';
 import { ProductsService } from './products.service';
 
@@ -16,6 +17,10 @@ fdescribe('ProductsService', () => {
     });
     service = TestBed.inject(ProductsService);
     httpController = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpController.verify();
   });
 
   it('should be created', () => {
@@ -38,7 +43,6 @@ fdescribe('ProductsService', () => {
       const url = `${environment.API_URL}/api/v1/products`;
       const req = httpController.expectOne(url);
       req.flush(mockData);
-      httpController.verify();
     });
 
   });
@@ -59,7 +63,6 @@ fdescribe('ProductsService', () => {
       const url = `${environment.API_URL}/api/v1/products`;
       const req = httpController.expectOne(url);
       req.flush(mockData);
-      httpController.verify();
     });
 
     it('should return product list with tax value', (doneFn) => {
@@ -97,7 +100,6 @@ fdescribe('ProductsService', () => {
       const url = `${environment.API_URL}/api/v1/products`;
       const req = httpController.expectOne(url);
       req.flush(mockData);
-      httpController.verify();
     });
 
     it('should send query params with limit 10 and offset 2', (doneFn) => {
@@ -120,9 +122,36 @@ fdescribe('ProductsService', () => {
       const params = req.request.params;
       expect(params.get('limit')).toEqual(`${limit}`);
       expect(params.get('offset')).toEqual(`${offset}`);
-      httpController.verify();
     });
 
+  });
+
+  describe('tests for create', () => {
+    it('should return a new product', (doneFn) => {
+      // Arrange
+      const mockData = generateOneProduct();
+      const dto: CreateProductDTO = {
+        title: 'New Product',
+        price: 100,
+        images: ['img'],
+        description: '...',
+        categoryId: 12,
+      };
+
+      // Act
+      service.create({...dto}).subscribe((data) => {
+        // Asssert
+        expect(data).toEqual(mockData);
+        doneFn();
+      });
+
+      // HTTP Config
+      const url = `${environment.API_URL}/api/v1/products`;
+      const req = httpController.expectOne(url);
+      req.flush(mockData);
+      expect(req.request.body).toEqual(dto);
+      expect(req.request.method).toEqual('POST');
+    });
   });
 
 });
