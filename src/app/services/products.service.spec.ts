@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../environments/environment';
-import { CreateProductDTO } from '../models/product.model';
+import { CreateProductDTO, UpdateProductDTO } from '../models/product.model';
 import { generateManyProducts, generateOneProduct } from '../models/product.mock';
 import { ProductsService } from './products.service';
 
@@ -151,6 +151,35 @@ fdescribe('ProductsService', () => {
       req.flush(mockData);
       expect(req.request.body).toEqual(dto);
       expect(req.request.method).toEqual('POST');
+    });
+  });
+
+  describe('tests for update', () => {
+    it('should update a product', (doneFn) => {
+      // Arrange
+      const productId = '1';
+      const mockData = generateOneProduct();
+      const dto: UpdateProductDTO = {
+        title: 'Updated Product',
+        price: 100,
+        images: ['img'],
+        description: '...',
+        categoryId: 12,
+      };
+
+      // Act
+      service.update(productId, {...dto}).subscribe((data) => {
+        // Asssert
+        expect(data).toEqual(mockData);
+        doneFn();
+      });
+
+      // HTTP Config
+      const url = `${environment.API_URL}/api/v1/products/${productId}`;
+      const req = httpController.expectOne(url);
+      req.flush(mockData);
+      expect(req.request.body).toEqual(dto);
+      expect(req.request.method).toEqual('PUT');
     });
   });
 
