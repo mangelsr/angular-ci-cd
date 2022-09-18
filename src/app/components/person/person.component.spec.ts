@@ -1,11 +1,11 @@
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { PersonComponent } from './person.component';
 import { Person } from '../../models/person.model';
 
-fdescribe('PersonComponent', () => {
+describe('PersonComponent', () => {
   let component: PersonComponent;
   let fixture: ComponentFixture<PersonComponent>;
 
@@ -109,4 +109,60 @@ fdescribe('PersonComponent', () => {
     // Assert
     expect(selectedPerson).toBe(expectedPerson);
   });
+});
+
+
+@Component({
+  template: '<app-person [person]="person" (onselected)="onselected($event)"></app-person>',
+
+})
+class HostComponent {
+  person = new Person('Miguel', 'Sanchez', 25, 95, 1.8)
+  selectedPerson: Person | undefined;
+
+  onselected(person: Person) {
+    this.selectedPerson = person;
+  }
+}
+
+fdescribe('PersonComponent from HostComponent', () => {
+  let component: HostComponent;
+  let fixture: ComponentFixture<HostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ HostComponent, PersonComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HostComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should display person name', () => {
+    const expectedName = component.person.name;
+    const h3Debug: DebugElement = fixture.debugElement.query(By.css('app-person h3'));
+    const h3Element: HTMLElement = h3Debug.nativeElement;
+
+    fixture.detectChanges();
+
+    expect(h3Element.textContent).toContain(expectedName);
+  });
+
+  it('should raise selected event', () => {
+    const btnDebug: DebugElement = fixture.debugElement.query(By.css('app-person .btn-choose'));
+
+    btnDebug.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(component.selectedPerson).toEqual(component.person);
+  });
+
 });
