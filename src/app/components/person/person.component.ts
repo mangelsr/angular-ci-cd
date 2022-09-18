@@ -9,7 +9,12 @@ import { Person } from 'src/app/models/person.model';
 export class PersonComponent  {
 
   @Input() person?: Person;
+  bmi = '';
 
   constructor() { }
+
+  calcBMI() {
+    this.bmi = this.person!.BMICalc();
+  }
 
 }
