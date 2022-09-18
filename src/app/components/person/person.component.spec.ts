@@ -58,4 +58,35 @@ fdescribe('PersonComponent', () => {
     // Assert
     expect(h3Element?.textContent).toContain(expectedMessage);
   });
+
+  it('should display a text with BMI when user call calcBMI', () => {
+    component.person = new Person('Miguel', 'Sanchez', 25, 95, 1.8);
+    const expectedMessage = 'BMI: overweigth 1';
+
+    const personDebug: DebugElement = fixture.debugElement;
+    const btnElement: HTMLElement = personDebug.query(By.css('.bmi-calc')).nativeElement;
+
+    // Act: Run change detection manually
+    component.calcBMI();
+    fixture.detectChanges();
+
+    // Assert
+    expect(btnElement?.textContent).toBe(expectedMessage);
+  });
+
+  it('should display a text with BMI when user clic the button', () => {
+    component.person = new Person('Miguel', 'Sanchez', 25, 95, 1.8);
+    const expectedMessage = 'BMI: overweigth 1';
+
+    const personDebug: DebugElement = fixture.debugElement;
+    const btnDebug: DebugElement = personDebug.query(By.css('.bmi-calc'));
+    const btnElement: HTMLElement = btnDebug.nativeElement;
+
+    // Act: Run change detection manually
+    btnDebug.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    // Assert
+    expect(btnElement?.textContent).toBe(expectedMessage);
+  });
 });
