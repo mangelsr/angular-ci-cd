@@ -1,16 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
 import { ProductsComponent } from './products.component';
+import { ProductComponent } from '../product/product.component';
+import { ProductsService } from '../../services/products.service';
+import { generateManyProducts } from '../../models/product.mock';
 
-describe('ProductsComponent', () => {
+fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
+  let productServiceSpy: jasmine.SpyObj<ProductsService>
 
   beforeEach(async () => {
+    const spy = jasmine.createSpyObj('ProductsService', ['getAll']);
     await TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ],
-      declarations: [ ProductsComponent ]
+      declarations: [
+        ProductsComponent,
+        ProductComponent,
+      ],
+      providers: [
+        { provide: ProductsService, useValue: spy },
+      ],
     })
     .compileComponents();
   });
@@ -18,10 +28,17 @@ describe('ProductsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
+    // MOCK PRODUCT SERVICE
+    productServiceSpy = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
+    const productsMock = generateManyProducts(3);
+    productServiceSpy.getAll.and.returnValue(of(productsMock));
+
+    fixture.detectChanges(); // ngOnInit
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(productServiceSpy.getAll).toHaveBeenCalled();
   });
 });
