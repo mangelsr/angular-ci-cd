@@ -40,5 +40,42 @@ describe('PeopleComponent', () => {
     expect(debugElement.length).toEqual(expectedPeople.length);
   });
 
+  it('should raise selected event when user clicked', () => {
+    const expectedPeople = [
+      new Person('Miguel', 'Sanchez', 25, 90, 1.8),
+      new Person('Angie', 'Mendoza', 21, 62, 1.65),
+      new Person('David', 'Sanchez', 16, 55, 1.78),
+    ];
+    component.people = expectedPeople;
+    fixture.detectChanges();
+
+    const btnDebug = fixture.debugElement.query(By.css('app-person .btn-choose'));
+    btnDebug.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(component.selectedPerson).toEqual(expectedPeople[0]);
+  });
+
+
+  it('should raise selected event when user clicked with render', () => {
+    const expectedPeople = [
+      new Person('Miguel', 'Sanchez', 25, 90, 1.8),
+      new Person('Angie', 'Mendoza', 21, 62, 1.65),
+      new Person('David', 'Sanchez', 16, 55, 1.78),
+    ];
+    component.people = expectedPeople;
+    fixture.detectChanges();
+
+    const btnDebug = fixture.debugElement.query(By.css('app-person .btn-choose'));
+    btnDebug.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    const liDebug = fixture.debugElement.queryAll(By.css('ul > li'));
+    const nameElemnt: HTMLElement = liDebug[0].nativeElement;
+    const ageElement: HTMLElement = liDebug[1].nativeElement;
+
+    expect(nameElemnt.textContent).toContain(expectedPeople[0].name);
+    expect(ageElement.textContent).toContain(expectedPeople[0].age);
+  });
 
 });
