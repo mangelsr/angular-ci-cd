@@ -8,7 +8,7 @@ import { ProductsService } from '../../services/products.service';
 import { ValueService } from '../../services/value.service';
 import { generateManyProducts } from '../../models/product.mock';
 
-fdescribe('ProductsComponent', () => {
+describe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let productServiceSpy: jasmine.SpyObj<ProductsService>
