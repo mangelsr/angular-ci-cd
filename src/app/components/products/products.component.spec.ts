@@ -1,6 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { of, defer } from 'rxjs';
+import { of, defer, elementAt } from 'rxjs';
 
 import { ProductsComponent } from './products.component';
 import { ProductComponent } from '../product/product.component';
@@ -89,6 +89,21 @@ fdescribe('ProductsComponent', () => {
       expect(component.status).toEqual('error');
     }));
 
+    it('should change state "loading" => "error"', fakeAsync(() => {
+      const btnDebug = fixture.debugElement.query(By.css('button.btn-products'));
+      productServiceSpy.getAll.and.returnValue(defer(() => Promise.reject('ERROR HAPPENS...')));
+
+      btnDebug.triggerEventHandler('click', null);
+      fixture.detectChanges();
+
+      expect((btnDebug.nativeElement as HTMLElement).textContent).toEqual('Loading');
+
+      tick(4000); //excecutes obs, setTimeout, promise
+      fixture.detectChanges();
+
+      expect((btnDebug.nativeElement as HTMLElement).textContent).toEqual('Error');
+    }));
+
   });
 
   describe('tests for callPromise', () => {
@@ -102,6 +117,19 @@ fdescribe('ProductsComponent', () => {
       expect(component.promiseResponse).toBe(mockMessage);
       expect(valueServiceSpy.getPromiseValue).toHaveBeenCalled();
     });
+
+    it('should show "Resolved value..." in <p> when btn was clicked', fakeAsync(() => {
+      const mockMessage = 'Resolved value...';
+      valueServiceSpy.getPromiseValue.and.returnValue(Promise.resolve(mockMessage));
+      const btnDebug = fixture.debugElement.query(By.css('.btn-promise'));
+
+      btnDebug.triggerEventHandler('click', null);
+      tick();
+      fixture.detectChanges();
+      const pElement: HTMLElement = fixture.debugElement.query(By.css('p.response')).nativeElement;
+
+      expect(pElement.textContent).toBe(mockMessage);
+    }));
   });
 
 });
