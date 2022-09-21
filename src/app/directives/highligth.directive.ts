@@ -1,11 +1,11 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Directive({
-  selector: '[appHighligh]'
+  selector: '[appHighligth]'
 })
 export class HighligthDirective implements OnChanges {
 
-  @Input() appHighligh = '';
+  @Input() appHighligth = '';
   defultColor = 'gray';
 
   constructor(
@@ -15,7 +15,7 @@ export class HighligthDirective implements OnChanges {
   }
 
   ngOnChanges(): void {
-    this.element.nativeElement.style.backgroundColor = this.appHighligh || this.defultColor;
+    this.element.nativeElement.style.backgroundColor = this.appHighligth || this.defultColor;
   }
 
 }
