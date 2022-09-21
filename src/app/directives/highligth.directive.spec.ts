@@ -1,5 +1,6 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { HighligthDirective } from './highligth.directive';
@@ -10,17 +11,21 @@ import { HighligthDirective } from './highligth.directive';
     <h5 appHighligth="green">Some value</h5>
     <p appHighligth>Paragraph</p>
     <p>Another paragraph</p>
+    <input [(ngModel)]="color" [appHighligth]="color" />
   `,
 
 })
-class HostComponent {}
+class HostComponent {
+  color = 'red';
+}
 
-fdescribe('appHighligthDirective', () => {
+describe('appHighligthDirective', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ FormsModule ],
       declarations: [ HostComponent, HighligthDirective ]
     })
     .compileComponents();
@@ -39,10 +44,10 @@ fdescribe('appHighligthDirective', () => {
 
   it('should have three highligted elements and one not highligted', () => {
     const elements = fixture.debugElement.queryAll(By.directive(HighligthDirective));
-    expect(elements.length).toBe(3);
+    expect(elements.length).toBe(4);
 
     const elementsWithout = fixture.debugElement.queryAll(By.css('*:not([appHighligth])'));
-    expect(elementsWithout.length).toBe(1);
+    expect(elementsWithout.length).toBe(2);
   });
 
   it('should match bgColor', () => {
@@ -55,7 +60,21 @@ fdescribe('appHighligthDirective', () => {
   it('should match h5.title be default color', () => {
     const element = fixture.debugElement.query(By.css('h5.title'));
     const directive = element.injector.get(HighligthDirective);
-
     expect((element.nativeElement as HTMLElement).style.backgroundColor).toBe(directive.defultColor);
   });
+
+  it('should bind <input> and change the bgColor', () => {
+    const inputDebug = fixture.debugElement.query(By.css('input'));
+    const inputElement: HTMLInputElement = inputDebug.nativeElement;
+
+    expect(inputElement.style.backgroundColor).toBe('red');
+
+    inputElement.value = 'green';
+    inputElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(inputElement.style.backgroundColor).toBe('green');
+    expect(component.color).toBe('green');
+  });
+
 });
