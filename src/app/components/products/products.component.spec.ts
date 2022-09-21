@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
+import { of, defer } from 'rxjs';
 
 import { ProductsComponent } from './products.component';
 import { ProductComponent } from '../product/product.component';
 import { ProductsService } from '../../services/products.service';
 import { generateManyProducts } from '../../models/product.mock';
 
-describe('ProductsComponent', () => {
+fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let productServiceSpy: jasmine.SpyObj<ProductsService>
@@ -56,5 +56,31 @@ describe('ProductsComponent', () => {
       expect(component.products.length).toEqual(productsMock.length + initialCount);
       expect(productsDebug.length).toEqual(productsMock.length + initialCount);
     });
+
+    it('should change state "loading" => "success"', fakeAsync(() => {
+      const productsMock = generateManyProducts(3);
+      productServiceSpy.getAll.and.returnValue(defer(() => Promise.resolve(productsMock)));
+
+      component.getAllProducts();
+      fixture.detectChanges();
+
+      expect(component.status).toEqual('loading');
+      tick(); //excecutes obs, setTimeout, promise
+      fixture.detectChanges();
+      expect(component.status).toEqual('success');
+    }));
+
+    it('should change state "loading" => "error"', fakeAsync(() => {
+      productServiceSpy.getAll.and.returnValue(defer(() => Promise.reject('ERROR HAPPENS...')));
+
+      component.getAllProducts();
+      fixture.detectChanges();
+
+      expect(component.status).toEqual('loading');
+      tick(4000); //excecutes obs, setTimeout, promise
+      fixture.detectChanges();
+      expect(component.status).toEqual('error');
+    }));
+
   });
 });
