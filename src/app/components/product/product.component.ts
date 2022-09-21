@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Product } from '../../models/product.model';
+import { generateOneProduct } from '../../models/product.mock';
 
 @Component({
   selector: 'app-product',
@@ -7,7 +8,7 @@ import { Product } from '../../models/product.model';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent {
-  @Input() product!: Product;
+  @Input() product: Product = generateOneProduct();
 
   constructor() { }
 
