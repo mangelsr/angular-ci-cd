@@ -5,22 +5,27 @@ import { of, defer } from 'rxjs';
 import { ProductsComponent } from './products.component';
 import { ProductComponent } from '../product/product.component';
 import { ProductsService } from '../../services/products.service';
+import { ValueService } from '../../services/value.service';
 import { generateManyProducts } from '../../models/product.mock';
 
 fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let productServiceSpy: jasmine.SpyObj<ProductsService>
+  let valueServiceSpy: jasmine.SpyObj<ValueService>
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('ProductsService', ['getAll']);
+    const productSpy = jasmine.createSpyObj('ProductsService', ['getAll']);
+    const valueSpy = jasmine.createSpyObj('ValueService', ['getPromiseValue']);
+
     await TestBed.configureTestingModule({
       declarations: [
         ProductsComponent,
         ProductComponent,
       ],
       providers: [
-        { provide: ProductsService, useValue: spy },
+        { provide: ProductsService, useValue: productSpy },
+        { provide: ValueService, useValue: valueSpy },
       ],
     })
     .compileComponents();
@@ -32,6 +37,8 @@ fdescribe('ProductsComponent', () => {
 
     // MOCK PRODUCT SERVICE
     productServiceSpy = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
+    valueServiceSpy = TestBed.inject(ValueService) as jasmine.SpyObj<ValueService>;
+
     const productsMock = generateManyProducts(3);
     productServiceSpy.getAll.and.returnValue(of(productsMock));
 
@@ -83,4 +90,18 @@ fdescribe('ProductsComponent', () => {
     }));
 
   });
+
+  describe('tests for callPromise', () => {
+    it('should call to promise', async () => {
+      const mockMessage = 'Resolved value...';
+      valueServiceSpy.getPromiseValue.and.returnValue(Promise.resolve(mockMessage));
+
+      await component.callPromise();
+      fixture.detectChanges();
+
+      expect(component.promiseResponse).toBe(mockMessage);
+      expect(valueServiceSpy.getPromiseValue).toHaveBeenCalled();
+    });
+  });
+
 });
