@@ -1,8 +1,8 @@
 <section class="container">
   <h1>Products component</h1>
   <h3>Promise response</h3>
-  <button (click)="callPromise()">Call promise</button>
-  <p>{{ promiseResponse }}</p>
+  <button class="btn-promise" (click)="callPromise()">Call promise</button>
+  <p class="response">{{ promiseResponse }}</p>
   <div class="my-grid">
     <app-product
       *ngFor="let product of products"
@@ -10,7 +10,7 @@
     >
     </app-product>
   </div>
-  <button [disabled]="status === 'loading'" (click)="getAllProducts()">
+  <button class="btn-products" [disabled]="status === 'loading'" (click)="getAllProducts()">
     <span *ngIf="status === 'init' || status === 'success'">Load more</span>
     <span *ngIf="status === 'loading'">Loading</span>
     <span *ngIf="status === 'error'">Error</span>
