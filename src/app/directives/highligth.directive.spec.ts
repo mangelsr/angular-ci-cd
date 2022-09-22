@@ -1,4 +1,4 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -13,7 +13,6 @@ import { HighligthDirective } from './highligth.directive';
     <p>Another paragraph</p>
     <input [(ngModel)]="color" [appHighligth]="color" />
   `,
-
 })
 class HostComponent {
   color = 'red';
