@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 
 import { HighligthDirective } from './highligth.directive';
+import { query, queryAll, queryAllByDirective } from '../../testing';
 
 @Component({
   template: `
@@ -42,28 +42,28 @@ describe('appHighligthDirective', () => {
   });
 
   it('should have three highligted elements and one not highligted', () => {
-    const elements = fixture.debugElement.queryAll(By.directive(HighligthDirective));
+    const elements = queryAllByDirective(fixture, HighligthDirective);
     expect(elements.length).toBe(4);
 
-    const elementsWithout = fixture.debugElement.queryAll(By.css('*:not([appHighligth])'));
+    const elementsWithout = queryAll(fixture, '*:not([appHighligth])');
     expect(elementsWithout.length).toBe(2);
   });
 
   it('should match bgColor', () => {
-    const elements = fixture.debugElement.queryAll(By.directive(HighligthDirective));
+    const elements = queryAllByDirective(fixture, HighligthDirective);
     expect((elements[0].nativeElement as HTMLElement).style.backgroundColor).toBe('gray');
     expect((elements[1].nativeElement as HTMLElement).style.backgroundColor).toBe('green');
     expect((elements[2].nativeElement as HTMLElement).style.backgroundColor).toBe('gray');
   });
 
   it('should match h5.title be default color', () => {
-    const element = fixture.debugElement.query(By.css('h5.title'));
+    const element = query(fixture, 'h5.title');
     const directive = element.injector.get(HighligthDirective);
     expect((element.nativeElement as HTMLElement).style.backgroundColor).toBe(directive.defultColor);
   });
 
   it('should bind <input> and change the bgColor', () => {
-    const inputDebug = fixture.debugElement.query(By.css('input'));
+    const inputDebug = query(fixture, 'input');
     const inputElement: HTMLInputElement = inputDebug.nativeElement;
 
     expect(inputElement.style.backgroundColor).toBe('red');
