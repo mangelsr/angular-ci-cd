@@ -6,7 +6,7 @@ import { ProductComponent } from '../product/product.component';
 import { ProductsService } from '../../services/products.service';
 import { ValueService } from '../../services/value.service';
 import { generateManyProducts } from '../../models/product.mock';
-import { asyncData, asyncError, observableMock, promiseMock } from '../../../testing';
+import { asyncData, asyncError, observableMock, promiseMock, query, queryById } from '../../../testing';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -121,7 +121,7 @@ describe('ProductsComponent', () => {
     it('should show "Resolved value..." in <p> when btn was clicked', fakeAsync(() => {
       const mockMessage = 'Resolved value...';
       valueServiceSpy.getPromiseValue.and.returnValue(promiseMock(mockMessage));
-      const btnDebug = fixture.debugElement.query(By.css('.btn-promise'));
+      const btnDebug = queryById(fixture, 'btn-promise');
 
       btnDebug.triggerEventHandler('click', null);
       tick();
