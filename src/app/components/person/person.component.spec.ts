@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { PersonComponent } from './person.component';
 import { Person } from '../../models/person.model';
+import { clickEvent, getText } from '../../../testing';
 
 describe('PersonComponent', () => {
   let component: PersonComponent;
@@ -63,39 +64,29 @@ describe('PersonComponent', () => {
     component.person = new Person('Miguel', 'Sanchez', 25, 95, 1.8);
     const expectedMessage = 'BMI: overweigth 1';
 
-    const personDebug: DebugElement = fixture.debugElement;
-    const btnElement: HTMLElement = personDebug.query(By.css('.bmi-calc')).nativeElement;
-
     // Act: Run change detection manually
     component.calcBMI();
     fixture.detectChanges();
 
     // Assert
-    expect(btnElement?.textContent).toBe(expectedMessage);
+    expect(getText(fixture, 'bmi-calc')).toBe(expectedMessage);
   });
 
   it('should display a text with BMI when user clic the button', () => {
     component.person = new Person('Miguel', 'Sanchez', 25, 95, 1.8);
     const expectedMessage = 'BMI: overweigth 1';
 
-    const personDebug: DebugElement = fixture.debugElement;
-    const btnDebug: DebugElement = personDebug.query(By.css('.bmi-calc'));
-    const btnElement: HTMLElement = btnDebug.nativeElement;
-
     // Act: Run change detection manually
-    btnDebug.triggerEventHandler('click', null);
+    clickEvent(fixture, 'bmi-calc', true);
     fixture.detectChanges();
 
     // Assert
-    expect(btnElement?.textContent).toBe(expectedMessage);
+    expect(getText(fixture, 'bmi-calc')).toBe(expectedMessage);
   });
 
   it('should raise selected event when click', () => {
     const expectedPerson = new Person('Miguel', 'Sanchez', 25, 95, 1.8);
     component.person = expectedPerson;
-
-    const personDebug: DebugElement = fixture.debugElement;
-    const btnDebug: DebugElement = personDebug.query(By.css('.btn-choose'));
 
     let selectedPerson: Person | undefined;
     component.onselected.subscribe((data) => {
@@ -103,7 +94,7 @@ describe('PersonComponent', () => {
     });
 
     // Act: Run change detection manually
-    btnDebug.triggerEventHandler('click', null);
+    clickEvent(fixture, 'btn-choose', true);
     fixture.detectChanges();
 
     // Assert
