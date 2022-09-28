@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterFormComponent } from './register-form.component';
 import { UsersService } from '../../../services/user.service';
+import { query, getText } from '../../../../testing/finders';
 
 fdescribe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
@@ -63,6 +64,18 @@ fdescribe('RegisterFormComponent', () => {
       checkTerms: false,
     });
     expect(component.form.invalid).toBeTrue();
+  });
+
+  it('should the email field be invalid on empty value and invalid email from the UI', () => {
+    const input: HTMLInputElement = query(fixture, 'input#email').nativeElement;
+
+    input.value = 'this is not a valid email';
+    input.dispatchEvent(new Event('input'));
+    input.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+
+    const errorText = getText(fixture, 'emailField-invalid');
+    expect(errorText).withContext('invalid email value').toBe("*It's not a email");
   });
 
 });
