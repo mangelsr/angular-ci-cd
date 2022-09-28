@@ -49,7 +49,7 @@ describe('PeopleComponent', () => {
     component.people = expectedPeople;
     fixture.detectChanges();
 
-    const btnDebug = fixture.debugElement.query(By.css('app-person .btn-choose'));
+    const btnDebug = fixture.debugElement.query(By.css('app-person [data-testid="btn-choose"]'));
     btnDebug.triggerEventHandler('click', null);
     fixture.detectChanges();
 
@@ -66,7 +66,7 @@ describe('PeopleComponent', () => {
     component.people = expectedPeople;
     fixture.detectChanges();
 
-    const btnDebug = fixture.debugElement.query(By.css('app-person .btn-choose'));
+    const btnDebug = fixture.debugElement.query(By.css('app-person [data-testid="btn-choose"]'));
     btnDebug.triggerEventHandler('click', null);
     fixture.detectChanges();
 

@@ -148,7 +148,7 @@ describe('PersonComponent from HostComponent', () => {
   });
 
   it('should raise selected event', () => {
-    const btnDebug: DebugElement = fixture.debugElement.query(By.css('app-person .btn-choose'));
+    const btnDebug: DebugElement = fixture.debugElement.query(By.css('app-person [data-testid="btn-choose"]'));
 
     btnDebug.triggerEventHandler('click', null);
     fixture.detectChanges();
