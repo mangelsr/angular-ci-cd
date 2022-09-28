@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterFormComponent } from './register-form.component';
 import { UsersService } from '../../../services/user.service';
-import { query, getText } from '../../../../testing/finders';
+import { getText, setInputValue } from '../../../../testing/';
 
-fdescribe('RegisterFormComponent', () => {
+describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let userServiceSpy: jasmine.SpyObj<UsersService>
@@ -67,11 +67,8 @@ fdescribe('RegisterFormComponent', () => {
   });
 
   it('should the email field be invalid on empty value and invalid email from the UI', () => {
-    const input: HTMLInputElement = query(fixture, 'input#email').nativeElement;
+    setInputValue(fixture, 'input#email', 'this is not a valid email');
 
-    input.value = 'this is not a valid email';
-    input.dispatchEvent(new Event('input'));
-    input.dispatchEvent(new Event('blur'));
     fixture.detectChanges();
 
     const errorText = getText(fixture, 'emailField-invalid');
