@@ -6,7 +6,7 @@ import { ProductComponent } from '../product/product.component';
 import { ProductsService } from '../../services/products.service';
 import { ValueService } from '../../services/value.service';
 import { generateManyProducts } from '../../models/product.mock';
-import { asyncData, asyncError, observableMock, promiseMock, query, queryById } from '../../../testing';
+import { asyncData, asyncError, observableMock, promiseMock, queryById, getText } from '../../../testing';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -126,9 +126,9 @@ describe('ProductsComponent', () => {
       btnDebug.triggerEventHandler('click', null);
       tick();
       fixture.detectChanges();
-      const pElement: HTMLElement = fixture.debugElement.query(By.css('p.response')).nativeElement;
+      const text = getText(fixture, 'response');
 
-      expect(pElement.textContent).toBe(mockMessage);
+      expect(text).toBe(mockMessage);
     }));
   });
 
