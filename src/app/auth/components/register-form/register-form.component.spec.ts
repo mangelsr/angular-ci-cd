@@ -31,4 +31,38 @@ fdescribe('RegisterFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should the email field be invalid on empty value and invalid email', () => {
+    component.emailField?.setValue('this is not a valid email');
+    expect(component.emailField?.invalid).withContext('invalid email value').toBeTrue();
+
+    component.emailField?.setValue('');
+    expect(component.emailField?.invalid).withContext('with empty value').toBeTrue();
+  });
+
+  it('should password field be invalid', () => {
+    component.passwordField?.setValue('');
+    expect(component.passwordField?.invalid).withContext('with empty value').toBeTrue();
+
+    component.passwordField?.setValue('12345');
+    expect(component.passwordField?.invalid).withContext('with "12345" value').toBeTrue();
+
+    component.passwordField?.setValue('qwertyuio');
+    expect(component.passwordField?.invalid).withContext('with no numbers value').toBeTrue();
+
+    component.passwordField?.setValue('admin123');
+    expect(component.passwordField?.valid).withContext('with correct value').toBeTrue();
+  });
+
+  it('should th form be invalid', () => {
+    component.form.patchValue({
+      name: 'Miguel',
+      email: 'mangelsr25@gmail.com',
+      password: 'admin123',
+      confirmPassword: 'admin123',
+      checkTerms: false,
+    });
+    expect(component.form.invalid).toBeTrue();
+  });
+
 });
