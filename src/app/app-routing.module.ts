@@ -11,6 +11,10 @@ const routes: Routes = [
   { path: 'pico-preview', component: PicoPreviewComponent },
   { path: 'people', component: PeopleComponent },
   { path: 'others', component: OthersComponent },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
 ];
 
 @NgModule({
