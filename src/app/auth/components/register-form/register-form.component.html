@@ -75,7 +75,7 @@
           formControlName="confirmPassword"
           [attr.aria-invalid]="
             confirmPasswordField?.touched
-              ? form?.hasError('match_password')
+              ? form.hasError('match_password')
               : ''
           "
         />
