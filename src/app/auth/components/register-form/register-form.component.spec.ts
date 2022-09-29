@@ -3,9 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterFormComponent } from './register-form.component';
 import { UsersService } from '../../../services/user.service';
-import { getText, setInputValue } from '../../../../testing/';
+import { getText, observableMock, setInputValue } from '../../../../testing/';
+import { generateOneUser } from '../../../models/user.mock';
 
-describe('RegisterFormComponent', () => {
+fdescribe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let userServiceSpy: jasmine.SpyObj<UsersService>
@@ -73,6 +74,23 @@ describe('RegisterFormComponent', () => {
 
     const errorText = getText(fixture, 'emailField-invalid');
     expect(errorText).withContext('invalid email value').toBe("*It's not a email");
+  });
+
+  it('it should send the form successfully', () => {
+    component.form.patchValue({
+      name: 'Miguel',
+      email: 'mangelsr25@gmail.com',
+      password: 'admin123',
+      confirmPassword: 'admin123',
+      checkTerms: true,
+    });
+    const userMock = generateOneUser();
+    userServiceSpy.create.and.returnValue(observableMock(userMock));
+
+    component.register(new Event('submit'));
+
+    expect(component.form.valid).toBeTrue();
+    expect(userServiceSpy.create).toHaveBeenCalled();
   });
 
 });
