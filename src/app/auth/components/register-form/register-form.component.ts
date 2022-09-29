@@ -22,6 +22,7 @@ export class RegisterFormComponent {
       validators: MyValidators.matchPasswords,
     }
   );
+  status: 'loading' | 'success' | 'error' | 'init' = 'init';
 
   constructor(
     private fb: FormBuilder,
@@ -32,10 +33,17 @@ export class RegisterFormComponent {
   register(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
+      this.status = 'loading';
       const value = this.form.value;
       this.usersService.create(value)
-      .subscribe((rta) => {
-        console.log(rta);
+      .subscribe({
+        next: (rta) => {
+          console.log(rta);
+          this.status = 'success';
+        },
+        error: (error) => {
+          this.status = 'error';
+        }
       });
     } else {
       this.form.markAllAsTouched();
