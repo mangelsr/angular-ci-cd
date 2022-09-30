@@ -3,9 +3,8 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 
 import { RegisterFormComponent } from './register-form.component';
 import { UsersService } from '../../../services/user.service';
-import { getText, observableMock, setInputValue } from '../../../../testing/';
+import { getText, observableMock, setInputValue, asyncData, setCheckValue, clickElement } from '../../../../testing/';
 import { generateOneUser } from '../../../models/user.mock';
-import { asyncData } from '../../../../testing/async-data';
 
 fdescribe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
@@ -115,6 +114,35 @@ fdescribe('RegisterFormComponent', () => {
     expect(component.status).toEqual('loading');
 
     // ACT
+    tick();
+    fixture.detectChanges();
+
+    expect(userServiceSpy.create).toHaveBeenCalled();
+    expect(component.status).toEqual('success');
+  }));
+
+  it('it should send the form submit logic from the UI', fakeAsync(() => {
+    const userMock = generateOneUser();
+    userServiceSpy.create.and.returnValue(asyncData(userMock));
+
+    setInputValue(fixture, 'input#name', 'Miguel');
+    setInputValue(fixture, 'input#email', 'mangelsr25@gmail.com');
+    setInputValue(fixture, 'input#password', 'admin123');
+    setInputValue(fixture, 'input#confirmPassword', 'admin123');
+    setCheckValue(fixture, 'input#terms', true);
+
+    fixture.detectChanges();
+
+    expect(component.form.valid).toBeTrue();
+
+    clickElement(fixture, 'btn-submit', true);
+    // Another way to handle this...
+    // query(fixture, 'form').triggerEventHandler('ngSubmit', new Event('submit'));
+
+    fixture.detectChanges();
+
+    expect(component.status).toBe('loading');
+
     tick();
     fixture.detectChanges();
 
