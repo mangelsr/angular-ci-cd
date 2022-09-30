@@ -38,7 +38,6 @@ export class RegisterFormComponent {
       this.usersService.create(value)
       .subscribe({
         next: (rta) => {
-          console.log(rta);
           this.status = 'success';
         },
         error: (error) => {
