@@ -21,3 +21,21 @@ export function setInputValue<T>(
   input.dispatchEvent(new Event('input'));
   input.dispatchEvent(new Event('blur'));
 }
+
+export function setCheckValue<T>(
+  fixture: ComponentFixture<T>,
+  selector: string,
+  checked: boolean,
+  withTestId: boolean = false,
+) {
+  let debugElement: DebugElement;
+  if (withTestId) {
+    debugElement = queryById(fixture, selector);
+  } else {
+    debugElement = query(fixture, selector);
+  }
+  const input: HTMLInputElement = debugElement.nativeElement;
+  input.checked = checked;
+  input.dispatchEvent(new Event('change'));
+  input.dispatchEvent(new Event('blur'));
+}
