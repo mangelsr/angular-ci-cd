@@ -1,5 +1,8 @@
 import { FormControl, FormGroup } from "@angular/forms";
+
 import { MyValidators } from "./validators";
+import { UsersService } from "../services/user.service";
+import { observableMock } from '../../testing/';
 
 
 describe('MyValidators', () => {
@@ -70,4 +73,36 @@ describe('MyValidators', () => {
     });
   });
 
+
+  describe('validateEmailAsync', () => {
+    it('should return null with valid email', (doneFn) => {
+      const control = new FormControl({
+        email: 'mangelsr25@gmail.com'
+      });
+      const userService: jasmine.SpyObj<UsersService> = jasmine.createSpyObj('UsersService', ['isAvailableByEmail']);
+      userService.isAvailableByEmail.and.returnValue(observableMock({isAvailable: true}));
+
+      const validator = MyValidators.validateEmailAsync(userService);
+      validator(control).subscribe(response => {
+        expect(response).toBeNull();
+        doneFn();
+      });
+    });
+
+    it('should return error', (doneFn) => {
+      const control = new FormControl({
+        email: 'maria@mail.com'
+      });
+      const userService: jasmine.SpyObj<UsersService> = jasmine.createSpyObj('UsersService', ['isAvailableByEmail']);
+      userService.isAvailableByEmail.and.returnValue(observableMock({isAvailable: false}));
+
+      const validator = MyValidators.validateEmailAsync(userService);
+      validator(control).subscribe(response => {
+        expect(response).toEqual({
+          not_available: true
+        });
+        doneFn();
+      });
+    });
+  });
 });
