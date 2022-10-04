@@ -74,4 +74,13 @@ fdescribe('ProductDetailComponent', () => {
     expect(priceText).toContain(productMock.price.toString());
     expect(productService.getOne).toHaveBeenCalledWith(productId);
   });
+
+  it('should show return to the last page when no productId is provided', () => {
+    route.setParamMap({});
+    location.back.and.callThrough();
+
+    fixture.detectChanges();  // ngOnInit
+
+    expect(location.back).toHaveBeenCalled();
+  });
 });
