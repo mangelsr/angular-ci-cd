@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
 
 import { Product } from '../../../models/product.model'
 import { ProductsService } from 'src/app/services/products.service';
@@ -14,6 +13,7 @@ import { ProductsService } from 'src/app/services/products.service';
 export class ProductDetailComponent implements OnInit {
 
   product: Product | null = null;
+  status: 'loading' | 'success' | 'error' | 'init' = 'init';
 
   constructor(
     private route: ActivatedRoute,
@@ -34,12 +34,15 @@ export class ProductDetailComponent implements OnInit {
   }
 
   private getProductDetail(productId: string) {
+    this.status = 'loading';
     this.productsService.getOne(productId)
     .subscribe({
       next: (product) => {
+        this.status = 'success';
         this.product = product;
       },
       error: () => {
+        this.status = 'error';
         this.goToBack();
       }
     })
