@@ -1,4 +1,5 @@
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { RegisterFormComponent } from './register-form.component';
@@ -6,18 +7,22 @@ import { UsersService } from '../../../services/user.service';
 import { asyncError, getText, observableMock, setInputValue, asyncData, setCheckValue, clickElement } from '../../../../testing/';
 import { generateOneUser } from '../../../models/user.mock';
 
-describe('RegisterFormComponent', () => {
+fdescribe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
   let fixture: ComponentFixture<RegisterFormComponent>;
   let userServiceSpy: jasmine.SpyObj<UsersService>
+  let router: jasmine.SpyObj<Router>
 
   beforeEach(async () => {
     const userSpy = jasmine.createSpyObj('UsersService', ['create', 'isAvailableByEmail']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+
     await TestBed.configureTestingModule({
-      imports: [ ReactiveFormsModule ],
+      imports: [ReactiveFormsModule ],
       declarations: [ RegisterFormComponent ],
       providers: [
         { provide: UsersService, useValue: userSpy },
+        { provide: Router, useValue: routerSpy },
       ],
     })
     .compileComponents();
@@ -26,6 +31,7 @@ describe('RegisterFormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterFormComponent);
     userServiceSpy = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     component = fixture.componentInstance;
     userServiceSpy.isAvailableByEmail.and.returnValue(observableMock({isAvailable: true}));
     fixture.detectChanges();
@@ -147,8 +153,9 @@ describe('RegisterFormComponent', () => {
     tick();
     fixture.detectChanges();
 
-    expect(userServiceSpy.create).toHaveBeenCalled();
     expect(component.status).toEqual('success');
+    expect(userServiceSpy.create).toHaveBeenCalled();
+    expect(router.navigateByUrl).toHaveBeenCalledOnceWith('/login');
   }));
 
   it('it should fail the form submission and change the status from "loading" => "error"', fakeAsync(() => {
