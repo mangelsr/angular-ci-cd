@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 import { MyValidators } from './../../../utils/validators';
 import { UsersService } from '../../../services/user.service';
@@ -26,7 +28,8 @@ export class RegisterFormComponent {
 
   constructor(
     private fb: FormBuilder,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private router: Router,
   ) {}
 
 
@@ -39,6 +42,7 @@ export class RegisterFormComponent {
       .subscribe({
         next: (rta) => {
           this.status = 'success';
+          this.router.navigateByUrl('/login');
         },
         error: (error) => {
           this.status = 'error';
