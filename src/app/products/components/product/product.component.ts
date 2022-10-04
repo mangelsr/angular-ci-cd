@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Product } from '../../models/product.model';
-import { generateOneProduct } from '../../models/product.mock';
+
+import { generateOneProduct } from 'src/app/models/product.mock';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-product',
