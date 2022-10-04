@@ -3,10 +3,11 @@ import { By } from '@angular/platform-browser';
 
 import { ProductsComponent } from './products.component';
 import { ProductComponent } from '../product/product.component';
-import { ProductsService } from '../../services/products.service';
-import { ValueService } from '../../services/value.service';
-import { generateManyProducts } from '../../models/product.mock';
-import { asyncData, asyncError, observableMock, promiseMock, queryById, getText } from '../../../testing';
+
+import { asyncData, asyncError, observableMock, promiseMock, queryById, getText } from 'src/testing';
+import { ProductsService } from 'src/app/services/products.service';
+import { ValueService } from 'src/app/services/value.service';
+import { generateManyProducts } from 'src/app/models/product.mock';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
