@@ -8,7 +8,7 @@ import { ActivatedRouteStub, getText, observableMock, asyncData } from 'src/test
 import { ProductDetailComponent } from './product-detail.component';
 import { generateOneProduct } from 'src/app/models/product.mock';
 
-fdescribe('ProductDetailComponent', () => {
+describe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;
   let fixture: ComponentFixture<ProductDetailComponent>;
   let route: ActivatedRouteStub;
@@ -105,4 +105,24 @@ fdescribe('ProductDetailComponent', () => {
 
     expect(component.status).toBe('success');
   }));
+
+  it('should type be "customer"', () => {
+    const type = 'customer';
+    route.setQueryParamMap({ type: type });
+
+    const productId = '3';
+    route.setParamMap({ id: productId });
+
+    const productMock = {
+      ...generateOneProduct(),
+      id: productId,
+    };
+    productService.getOne.and.returnValue(observableMock(productMock));
+
+    fixture.detectChanges();  // ngOnInit
+
+    const typeText = getText(fixture, 'type');
+    expect(component.type).toBe(type);
+    expect(typeText).toContain(type);
+  });
 });
