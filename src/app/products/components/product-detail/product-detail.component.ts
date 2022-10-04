@@ -14,7 +14,7 @@ export class ProductDetailComponent implements OnInit {
 
   product: Product | null = null;
   status: 'loading' | 'success' | 'error' | 'init' = 'init';
-  customerType: string | null = null;
+  type: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +34,7 @@ export class ProductDetailComponent implements OnInit {
       });
 
     this.route.queryParamMap.subscribe(params => {
-      this.customerType = params.get('type');
+      this.type = params.get('type');
     });
   }
 
