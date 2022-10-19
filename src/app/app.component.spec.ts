@@ -1,7 +1,21 @@
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { RouterLinkDirectiveStub, queryAllByDirective } from '../testing/';
+
+// OPT2: Use bare studs
+@Component({
+  selector: 'app-banner',
+})
+// eslint-disable-next-line @angular-eslint/component-class-suffix
+class BannerComponentStud {}
+
+@Component({
+  selector: 'app-footer',
+})
+// eslint-disable-next-line @angular-eslint/component-class-suffix
+class FooterComponentStud {}
 
 fdescribe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -15,7 +29,13 @@ fdescribe('AppComponent', () => {
       declarations: [
         AppComponent,
         RouterLinkDirectiveStub,
+        BannerComponentStud,
+        FooterComponentStud,
       ],
+      // OPT1: Omit error schema
+      // schemas: [
+      //   NO_ERRORS_SCHEMA,
+      // ]
     }).compileComponents();
   });
 
