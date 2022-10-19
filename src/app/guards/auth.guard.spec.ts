@@ -3,7 +3,7 @@ import { AuthGuard } from './auth.guard';
 import { TokenService } from '../services/token.service';
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
-import { fakeActivatedRouteSnapshot, fakeRouterStateSnapshot, observableMock } from "src/testing";
+import { fakeActivatedRouteSnapshot, fakeParamMap, fakeRouterStateSnapshot, observableMock } from "src/testing";
 import { generateOneUser } from "../models/user.mock";
 
 fdescribe('Auth Guard', () => {
@@ -38,7 +38,11 @@ fdescribe('Auth Guard', () => {
   });
 
   it('should return true with a session', (doneFn) => {
-    const activatedRoute = fakeActivatedRouteSnapshot({});
+    const activatedRoute = fakeActivatedRouteSnapshot({
+      // paramMap: fakeParamMap({
+      //   idProduct: '1234',
+      // }),
+    });
     const routerState = fakeRouterStateSnapshot({});
 
     const mockedUser = generateOneUser();
@@ -51,8 +55,12 @@ fdescribe('Auth Guard', () => {
     });
   });
 
-  it('should return true without a session', (doneFn) => {
-    const activatedRoute = fakeActivatedRouteSnapshot({});
+  it('should return false without a session', (doneFn) => {
+    const activatedRoute = fakeActivatedRouteSnapshot({
+      // paramMap: fakeParamMap({
+      //   idProduct: '1234',
+      // }),
+    });
     const routerState = fakeRouterStateSnapshot({});
 
     authService.getUser.and.returnValue(observableMock(null));
@@ -65,4 +73,21 @@ fdescribe('Auth Guard', () => {
     });
   });
 
+  it('should return false with idProduct Param', (doneFn) => {
+    const activatedRoute = fakeActivatedRouteSnapshot({
+      // paramMap: fakeParamMap({
+      //   idProduct: '1234',
+      // }),
+    });
+    const routerState = fakeRouterStateSnapshot({});
+
+    authService.getUser.and.returnValue(observableMock(null));
+
+    guard.canActivate(activatedRoute, routerState)
+      .subscribe(response => {
+        expect(response).toBe(false);
+        expect(router.navigate).toHaveBeenCalledWith(['/home']);
+        doneFn();
+    });
+  });
 });
