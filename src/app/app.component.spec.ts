@@ -17,7 +17,7 @@ class BannerComponentStud {}
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class FooterComponentStud {}
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
 
