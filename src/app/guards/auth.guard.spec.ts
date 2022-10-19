@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { fakeActivatedRouteSnapshot, fakeParamMap, fakeRouterStateSnapshot, observableMock } from "src/testing";
 import { generateOneUser } from "../models/user.mock";
 
-fdescribe('Auth Guard', () => {
+describe('Auth Guard', () => {
   let guard: AuthGuard;
   let tokenService: jasmine.SpyObj<TokenService>;
   let authService: jasmine.SpyObj<AuthService>;
