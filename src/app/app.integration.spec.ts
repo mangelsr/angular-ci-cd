@@ -5,29 +5,34 @@ import { Router, RouterLinkWithHref } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { clickElement, query, queryAllByDirective } from "src/testing";
 import { AppComponent } from "./app.component";
+import { AppModule } from "./app.module";
+import { routes } from "./app-routing.module";
+
+// NOTE:
+// INTEGRATION TESTS DON'T SUPPORT LAZY LOADED MODULES...
 
 
-@Component({
-  selector: 'app-pico-preview',
-})
-class PicoPreviewComponentStud {}
+// Example with Duplicated routes and using stud components
+// @Component({
+//   selector: 'app-pico-preview',
+// })
+// class PicoPreviewComponentStud {}
 
-@Component({
-  selector: 'app-people',
-})
-class PeopleComponentStud {}
+// @Component({
+//   selector: 'app-people',
+// })
+// class PeopleComponentStud {}
 
-@Component({
-  selector: 'app-others',
-})
-class OthersComponentStud {}
+// @Component({
+//   selector: 'app-others',
+// })
+// class OthersComponentStud {}
 
-
-const routes = [
-  { path: 'pico-preview', component: PicoPreviewComponentStud },
-  { path: 'people', component: PeopleComponentStud },
-  { path: 'others', component: OthersComponentStud },
-];
+// const routes = [
+//   { path: 'pico-preview', component: PicoPreviewComponentStud },
+//   { path: 'people', component: PeopleComponentStud },
+//   { path: 'others', component: OthersComponentStud },
+// ];
 
 
 fdescribe('App Integratioin Test', () => {
@@ -38,17 +43,13 @@ fdescribe('App Integratioin Test', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        AppModule,
+        // Important order, RouterTestingModule need to override whats on AppModule
         RouterTestingModule.withRoutes(routes),
       ],
-      declarations: [
-        AppComponent,
-        PicoPreviewComponentStud,
-        PeopleComponentStud,
-        OthersComponentStud,
-      ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ]
+      // schemas: [
+      //   NO_ERRORS_SCHEMA,
+      // ],
     }).compileComponents();
   });
 
@@ -77,9 +78,18 @@ fdescribe('App Integratioin Test', () => {
   it('should render OthersComponent when clicked', fakeAsync(() => {
     clickElement(fixture, 'others-link', true);
     tick(); // Wait until navigation end
-    fixture.detectChanges();
+    fixture.detectChanges(); // OthersComponent ngOnInit
     expect(router.url).toEqual('/others');
     const element = query(fixture, 'app-others');
+    expect(element).toBeTruthy();
+  }));
+
+  it('should render PicoComponent when clicked', fakeAsync(() => {
+    clickElement(fixture, 'pico-link', true);
+    tick(); // Wait until navigation end
+    fixture.detectChanges(); // PicoPreviewComponent ngOnInit
+    expect(router.url).toEqual('/pico-preview');
+    const element = query(fixture, 'app-pico-preview');
     expect(element).toBeTruthy();
   }));
 
