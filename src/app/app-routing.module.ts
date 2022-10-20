@@ -4,11 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { PicoPreviewComponent } from "./components/pico-preview/pico-preview.component";
 import { PeopleComponent } from './components/people/people.component';
 import { OthersComponent } from './components/others/others.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'pico-preview', component: PicoPreviewComponent },
   { path: 'people', component: PeopleComponent },
-  { path: 'others', component: OthersComponent },
+  {
+    path: 'others',
+    canActivate: [ AuthGuard ],
+    component: OthersComponent,
+  },
   {
     path: 'products',
     loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
