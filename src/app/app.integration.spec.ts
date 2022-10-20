@@ -3,10 +3,12 @@ import { Component, NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Router, RouterLinkWithHref } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
-import { clickElement, query, queryAllByDirective } from "src/testing";
+import { asyncData, clickElement, getText, query, queryAllByDirective } from "src/testing";
 import { AppComponent } from "./app.component";
 import { AppModule } from "./app.module";
 import { routes } from "./app-routing.module";
+import { ProductsService } from './services/products.service';
+import { generateManyProducts } from "./models/product.mock";
 
 // NOTE:
 // INTEGRATION TESTS DON'T SUPPORT LAZY LOADED MODULES...
@@ -39,13 +41,18 @@ fdescribe('App Integratioin Test', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
   let router: Router;
+  let productsService: jasmine.SpyObj<ProductsService>;
 
   beforeEach(async () => {
+    const productsServiceSpy = jasmine.createSpyObj('ProductsService', ['getAll']);
     await TestBed.configureTestingModule({
       imports: [
         AppModule,
         // Important order, RouterTestingModule need to override whats on AppModule
         RouterTestingModule.withRoutes(routes),
+      ],
+      providers: [
+        { provide: ProductsService, useValue: productsServiceSpy },
       ],
       // schemas: [
       //   NO_ERRORS_SCHEMA,
@@ -60,6 +67,7 @@ fdescribe('App Integratioin Test', () => {
 
     // Providers
     router = TestBed.inject(Router);
+    productsService = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
 
     router.initialNavigation();
     tick(); // Wait until navigation end
@@ -76,12 +84,24 @@ fdescribe('App Integratioin Test', () => {
   });
 
   it('should render OthersComponent when clicked', fakeAsync(() => {
+    const mockedProducts = generateManyProducts(10);
+    productsService.getAll.and.returnValue(asyncData(mockedProducts));
+
     clickElement(fixture, 'others-link', true);
     tick(); // Wait until navigation end
-    fixture.detectChanges(); // OthersComponent ngOnInit
+
     expect(router.url).toEqual('/others');
     const element = query(fixture, 'app-others');
     expect(element).toBeTruthy();
+
+    fixture.detectChanges(); // OthersComponent ngOnInit
+    expect(productsService.getAll).toHaveBeenCalledTimes(1);
+
+    tick(); // Resolves productsService.getAll() execution
+    fixture.detectChanges();
+
+    const text = getText(fixture, 'products-length');
+    expect(text).toContain(mockedProducts.length);
   }));
 
   it('should render PicoComponent when clicked', fakeAsync(() => {
