@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> {
     // const token = this.tokenService.getToken();
     // if (!token) {
-    //   this.router.navigate(['/home']);
+    //   this.router.navigate(['/']);
     //   return false;
     // }
     // return true;
@@ -35,7 +35,7 @@ export class AuthGuard implements CanActivate {
     .pipe(
       map(user => {
         if(!user) {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
           return false;
         }
         return true;

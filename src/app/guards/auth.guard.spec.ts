@@ -68,7 +68,7 @@ describe('Auth Guard', () => {
     guard.canActivate(activatedRoute, routerState)
       .subscribe(response => {
         expect(response).toBe(false);
-        expect(router.navigate).toHaveBeenCalledWith(['/home']);
+        expect(router.navigate).toHaveBeenCalledWith(['/']);
         doneFn();
     });
   });
@@ -86,7 +86,7 @@ describe('Auth Guard', () => {
     guard.canActivate(activatedRoute, routerState)
       .subscribe(response => {
         expect(response).toBe(false);
-        expect(router.navigate).toHaveBeenCalledWith(['/home']);
+        expect(router.navigate).toHaveBeenCalledWith(['/']);
         doneFn();
     });
   });
