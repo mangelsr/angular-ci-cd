@@ -1,27 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { Location, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 import { Product } from '../../../models/product.model'
 import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
-  selector: 'app-product-detail',
-  templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.scss'],
-  standalone: false
+    selector: 'app-product-detail',
+    templateUrl: './product-detail.component.html',
+    styleUrls: ['./product-detail.component.scss'],
+    imports: [CurrencyPipe]
 })
 export class ProductDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private productsService = inject(ProductsService);
+  private location = inject(Location);
+
 
   product: Product | null = null;
   status: 'loading' | 'success' | 'error' | 'init' = 'init';
   type: string | null = null;
-
-  constructor(
-    private route: ActivatedRoute,
-    private productsService: ProductsService,
-    private location: Location
-  ) { }
 
   ngOnInit(): void {
     this.route.paramMap

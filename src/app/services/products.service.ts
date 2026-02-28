@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { retry, catchError, map } from 'rxjs/operators';
 import { Observable, throwError, zip } from 'rxjs';
@@ -10,12 +10,10 @@ import { environment } from './../../environments/environment';
   providedIn: 'root'
 })
 export class ProductsService {
+  private http = inject(HttpClient);
+
 
   private apiUrl = `${environment.API_URL}/api/v1/products`;
-
-  constructor(
-    private http: HttpClient
-  ) { }
 
   getAllSimple() {
     return this.http.get<Product[]>(this.apiUrl);

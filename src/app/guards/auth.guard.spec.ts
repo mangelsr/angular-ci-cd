@@ -3,12 +3,12 @@ import { AuthGuard } from './auth.guard';
 import { TokenService } from '../services/token.service';
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
-import { fakeActivatedRouteSnapshot, fakeParamMap, fakeRouterStateSnapshot, observableMock } from "src/testing";
+import { fakeActivatedRouteSnapshot, fakeRouterStateSnapshot, observableMock } from "src/testing";
 import { generateOneUser } from "../models/user.mock";
 
 describe('Auth Guard', () => {
   let guard: AuthGuard;
-  let tokenService: jasmine.SpyObj<TokenService>;
+  // let tokenService: jasmine.SpyObj<TokenService>;
   let authService: jasmine.SpyObj<AuthService>;
   let router: jasmine.SpyObj<Router>;
 
@@ -27,7 +27,7 @@ describe('Auth Guard', () => {
     });
 
     guard = TestBed.inject(AuthGuard);
-    tokenService = TestBed.inject(TokenService) as jasmine.SpyObj<TokenService>;
+    // tokenService = TestBed.inject(TokenService) as jasmine.SpyObj<TokenService>;
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
   });

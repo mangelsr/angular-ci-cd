@@ -5,7 +5,7 @@
     novalidate
     (ngSubmit)="register($event)"
     autocomplete="off"
-  >
+    >
     <div>
       <div class="grid">
         <label for="name">
@@ -17,10 +17,12 @@
             placeholder="Full Name"
             formControlName="name"
             [attr.aria-invalid]="nameField?.touched ? nameField?.invalid : ''"
-          />
-          <ng-container *ngIf="nameField?.touched && nameField?.errors">
-            <small *ngIf="nameField?.hasError('required')">*Required</small>
-          </ng-container>
+            />
+          @if (nameField?.touched && nameField?.errors) {
+            @if (nameField?.hasError('required')) {
+              <small>*Required</small>
+            }
+          }
         </label>
 
         <label for="email">
@@ -32,14 +34,20 @@
             placeholder="Email address"
             formControlName="email"
             [attr.aria-invalid]="emailField?.touched ? emailField?.invalid : ''"
-          />
-          <ng-container *ngIf="emailField?.touched && emailField?.errors">
-            <small data-testid="emailField-required" *ngIf="emailField?.hasError('required')">*Required</small>
-            <small data-testid="emailField-invalid" *ngIf="emailField?.hasError('email')"
+            />
+          @if (emailField?.touched && emailField?.errors) {
+            @if (emailField?.hasError('required')) {
+              <small data-testid="emailField-required">*Required</small>
+            }
+            @if (emailField?.hasError('email')) {
+              <small data-testid="emailField-invalid"
               >*It's not a email</small>
-            <small data-testid="emailField-notavailable" *ngIf="emailField?.hasError('not_available')"
+            }
+            @if (emailField?.hasError('not_available')) {
+              <small data-testid="emailField-notavailable"
               >*The email is registered</small>
-          </ng-container>
+            }
+          }
         </label>
       </div>
 
@@ -54,52 +62,60 @@
           [attr.aria-invalid]="
             passwordField?.touched ? passwordField?.invalid : ''
           "
-        />
-        <ng-container *ngIf="passwordField?.touched && passwordField?.errors">
-          <small *ngIf="passwordField?.hasError('required')">*Required</small>
-          <small *ngIf="passwordField?.hasError('minlength')"
-            >*Should be greater 6</small
-          >
-          <small *ngIf="passwordField?.hasError('invalid_password')"
-            >*Should contain numbers</small
-          >
-        </ng-container>
-      </label>
+          />
+        @if (passwordField?.touched && passwordField?.errors) {
+          @if (passwordField?.hasError('required')) {
+            <small>*Required</small>
+          }
+          @if (passwordField?.hasError('minlength')) {
+            <small
+              >*Should be greater 6</small
+              >
+            }
+            @if (passwordField?.hasError('invalid_password')) {
+              <small
+                >*Should contain numbers</small
+                >
+              }
+            }
+          </label>
 
-      <label for="confirmPassword">
-        Confirm Password
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          placeholder="Confirm password"
-          formControlName="confirmPassword"
+          <label for="confirmPassword">
+            Confirm Password
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm password"
+              formControlName="confirmPassword"
           [attr.aria-invalid]="
             confirmPasswordField?.touched
               ? form.hasError('match_password')
               : ''
           "
-        />
-        <ng-container *ngIf="confirmPasswordField?.touched && form.errors">
-          <small *ngIf="form.hasError('match_password')">*Not matching</small>
-        </ng-container>
-      </label>
+              />
+            @if (confirmPasswordField?.touched && form.errors) {
+              @if (form.hasError('match_password')) {
+                <small>*Not matching</small>
+              }
+            }
+          </label>
 
-      <fieldset>
-        <label for="terms">
-          <input
-            type="checkbox"
-            id="terms"
-            name="terms"
-            formControlName="checkTerms"
+          <fieldset>
+            <label for="terms">
+              <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                formControlName="checkTerms"
             [attr.aria-invalid]="
               checkTermsField?.touched ? checkTermsField?.invalid : ''
             "
-          />
-          I agree to the Terms and Conditions
-        </label>
-      </fieldset>
-      <button data-testid="btn-submit" [disabled]="status === 'loading'" type="submit">Register</button>
-    </div>
-  </form>
-</section>
+                />
+              I agree to the Terms and Conditions
+            </label>
+          </fieldset>
+          <button data-testid="btn-submit" [disabled]="status === 'loading'" type="submit">Register</button>
+        </div>
+      </form>
+    </section>

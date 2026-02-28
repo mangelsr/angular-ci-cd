@@ -8,14 +8,12 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 
 
 @NgModule({
-  declarations: [
-    ProductComponent,
-    ProductsComponent,
-    ProductDetailComponent
-  ],
-  imports: [
-    CommonModule,
-    ProductsRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        ProductsRoutingModule,
+        ProductComponent,
+        ProductsComponent,
+        ProductDetailComponent
+    ]
 })
 export class ProductsModule { }

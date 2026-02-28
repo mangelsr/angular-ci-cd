@@ -21,13 +21,13 @@ describe('ProductDetailComponent', () => {
     const locationSpy = jasmine.createSpyObj('Location', ['back']);
 
     await TestBed.configureTestingModule({
-      declarations: [ ProductDetailComponent ],
-      providers: [
+    imports: [ProductDetailComponent],
+    providers: [
         { provide: ActivatedRoute, useValue: routeStub },
         { provide: ProductsService, useValue: productSpy },
         { provide: Location, useValue: locationSpy },
-      ],
-    })
+    ],
+})
     .compileComponents();
   });
 

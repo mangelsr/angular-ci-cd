@@ -18,13 +18,12 @@ describe('RegisterFormComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule ],
-      declarations: [ RegisterFormComponent ],
-      providers: [
+    imports: [ReactiveFormsModule, RegisterFormComponent],
+    providers: [
         { provide: UsersService, useValue: userSpy },
         { provide: Router, useValue: routerSpy },
-      ],
-    })
+    ],
+})
     .compileComponents();
   });
 

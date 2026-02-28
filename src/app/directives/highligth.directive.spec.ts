@@ -6,14 +6,14 @@ import { HighligthDirective } from './highligth.directive';
 import { query, queryAll, queryAllByDirective } from '../../testing';
 
 @Component({
-  template: `
+    template: `
     <h5 class="title" appHighligth>Some value</h5>
     <h5 appHighligth="green">Some value</h5>
     <p appHighligth>Paragraph</p>
     <p>Another paragraph</p>
     <input [(ngModel)]="color" [appHighligth]="color" />
   `,
-  standalone: false,
+    imports: [FormsModule],
 })
 class HostComponent {
   color = 'red';
@@ -25,9 +25,8 @@ describe('appHighligthDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ FormsModule ],
-      declarations: [ HostComponent, HighligthDirective ]
-    })
+    imports: [FormsModule, HostComponent, HighligthDirective]
+})
     .compileComponents();
   });
 

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { Person } from 'src/app/models/person.model';
 
+import { PersonComponent } from '../person/person.component';
+
 @Component({
-  selector: 'app-people',
-  templateUrl: './people.component.html',
-  styleUrls: ['./people.component.scss'],
-  standalone: false
+    selector: 'app-people',
+    templateUrl: './people.component.html',
+    styleUrls: ['./people.component.scss'],
+    imports: [PersonComponent]
 })
 export class PeopleComponent {
 

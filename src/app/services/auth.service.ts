@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
@@ -12,15 +12,12 @@ import { TokenService } from './../services/token.service';
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
+  private tokenService = inject(TokenService);
+
 
   private apiUrl = `${environment.API_URL}/api/v1/auth`;
   private user = new BehaviorSubject<User | null>(null);
-
-  constructor(
-    private http: HttpClient,
-    private tokenService: TokenService
-  ) {
-  }
 
   getUser() {
     return this.user.asObservable();

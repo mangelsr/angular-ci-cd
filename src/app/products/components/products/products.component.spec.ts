@@ -20,16 +20,14 @@ describe('ProductsComponent', () => {
     const valueSpy = jasmine.createSpyObj('ValueService', ['getPromiseValue']);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        ProductsComponent,
-        ProductComponent,
-        RouterLinkDirectiveStub,
-      ],
-      providers: [
+    imports: [ProductsComponent,
+        ProductComponent],
+    declarations: [RouterLinkDirectiveStub],
+    providers: [
         { provide: ProductsService, useValue: productSpy },
         { provide: ValueService, useValue: valueSpy },
-      ],
-    })
+    ],
+})
     .compileComponents();
   });
 

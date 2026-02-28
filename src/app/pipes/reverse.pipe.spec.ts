@@ -6,12 +6,12 @@ import { By } from '@angular/platform-browser';
 import { ReversePipe } from './reverse.pipe';
 
 @Component({
-  template: `
+    template: `
     <h5>{{ 'text' | reverse }}</h5>
     <input [(ngModel)]="text">
     <p>{{ text | reverse }}</p>
   `,
-  standalone: false,
+    imports: [FormsModule],
 })
 class HostComponent {
   text = '';
@@ -42,9 +42,8 @@ describe('ReversePipe from HostComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ FormsModule ],
-      declarations: [ HostComponent, ReversePipe ]
-    })
+    imports: [FormsModule, HostComponent, ReversePipe]
+})
     .compileComponents();
   });
 

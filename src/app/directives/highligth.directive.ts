@@ -1,17 +1,14 @@
-import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, inject } from '@angular/core';
 
-@Directive({
-  selector: '[appHighligth]',
-  standalone: false
-})
+@Directive({ selector: '[appHighligth]' })
 export class HighligthDirective implements OnChanges {
+  private element = inject(ElementRef);
+
 
   @Input() appHighligth = '';
   defultColor = 'gray';
 
-  constructor(
-    private element: ElementRef,
-  ) {
+  constructor() {
     this.element.nativeElement.style.backgroundColor = this.defultColor;
   }
 

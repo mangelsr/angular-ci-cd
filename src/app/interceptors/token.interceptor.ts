@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -11,10 +11,8 @@ import { TokenService } from './../services/token.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+  private tokenService = inject(TokenService);
 
-  constructor(
-    private tokenService: TokenService
-  ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     request = this.addToken(request);

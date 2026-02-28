@@ -12,8 +12,8 @@ describe('PersonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PersonComponent ]
-    })
+    imports: [PersonComponent]
+})
     .compileComponents();
   });
 
@@ -31,9 +31,9 @@ describe('PersonComponent', () => {
     expect(component.person?.name).toEqual('Miguel');
   });
 
-  it('should have a <p> with "Mi heigth is {person.heigth}"', () => {
+  it('should have a <p> with "Mi height is {person.heigth}"', () => {
     component.person = new Person('Miguel', 'Sanchez', 25, 95, 1.8);
-    const expectedMessage = 'Mi heigth is 1.8';
+    // const expectedMessage = 'Mi height is 1.8';
     const personDebug: DebugElement = fixture.debugElement; // Good Practice
     const pDebug: DebugElement = personDebug.query(By.css('p'));
     const pElement: HTMLElement = pDebug.nativeElement;
@@ -102,10 +102,7 @@ describe('PersonComponent', () => {
 });
 
 
-@Component({
-  template: '<app-person [person]="person" (onselected)="onselected($event)"></app-person>',
-  standalone: false,
-})
+@Component({ template: '<app-person [person]="person" (onselected)="onselected($event)"></app-person>', })
 class HostComponent {
   person = new Person('Miguel', 'Sanchez', 25, 95, 1.8)
   selectedPerson: Person | undefined;
@@ -121,8 +118,8 @@ describe('PersonComponent from HostComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HostComponent, PersonComponent ]
-    })
+    imports: [HostComponent, PersonComponent]
+})
     .compileComponents();
   });
 

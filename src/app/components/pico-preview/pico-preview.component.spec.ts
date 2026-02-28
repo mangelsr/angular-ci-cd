@@ -8,8 +8,8 @@ describe('PicoPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PicoPreviewComponent ]
-    })
+    imports: [PicoPreviewComponent]
+})
     .compileComponents();
   });
 

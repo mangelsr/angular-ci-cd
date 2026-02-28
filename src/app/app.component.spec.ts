@@ -1,4 +1,4 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
@@ -6,15 +6,15 @@ import { RouterLinkDirectiveStub, queryAllByDirective } from '../testing/';
 
 // OPT2: Use bare studs
 @Component({
-  selector: 'app-banner',
-  standalone: false,
+    selector: 'app-banner',
+    imports: [RouterTestingModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class BannerComponentStud {}
 
 @Component({
-  selector: 'app-footer',
-  standalone: false,
+    selector: 'app-footer',
+    imports: [RouterTestingModule],
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class FooterComponentStud {}
@@ -25,20 +25,14 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent,
-        RouterLinkDirectiveStub,
+    imports: [
+        RouterTestingModule,
         BannerComponentStud,
-        FooterComponentStud,
-      ],
-      // OPT1: Omit error schema
-      // schemas: [
-      //   NO_ERRORS_SCHEMA,
-      // ]
-    }).compileComponents();
+        FooterComponentStud
+    ],
+    declarations: [AppComponent,
+        RouterLinkDirectiveStub],
+}).compileComponents();
   });
 
   beforeEach(() => {

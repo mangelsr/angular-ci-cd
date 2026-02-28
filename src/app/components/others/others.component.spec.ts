@@ -11,9 +11,8 @@ describe('OthersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ FormsModule, HttpClientTestingModule ],
-      declarations: [ OthersComponent, ReversePipe ]
-    })
+    imports: [FormsModule, HttpClientTestingModule, OthersComponent, ReversePipe]
+})
     .compileComponents();
   });
 

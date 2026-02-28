@@ -1,5 +1,4 @@
 /* eslint-disable @angular-eslint/component-class-suffix */
-import { Component, NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Router, RouterLinkWithHref } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";

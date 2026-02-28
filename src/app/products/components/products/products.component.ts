@@ -1,27 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { Product } from 'src/app/models/product.model';
 import { ProductsService } from 'src/app/services/products.service';
 import { ValueService } from 'src/app/services/value.service';
 
+import { ProductComponent } from '../product/product.component';
+
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss'],
-  standalone: false,
+    selector: 'app-products',
+    templateUrl: './products.component.html',
+    styleUrls: ['./products.component.scss'],
+    imports: [
+    ProductComponent
+],
 })
 export class ProductsComponent implements OnInit {
+  private productsService = inject(ProductsService);
+  private valueService = inject(ValueService);
+
   products: Product[] = [];
   limit = 10;
   offset = 0;
   status: 'loading' | 'success' | 'error' | 'init' = 'init';
   promiseResponse = '';
-
-  constructor(
-    private productsService: ProductsService,
-    private valueService: ValueService,
-  ) {}
 
   ngOnInit(): void {
     this.getAllProducts();

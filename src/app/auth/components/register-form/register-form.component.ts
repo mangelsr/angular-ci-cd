@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 
@@ -7,21 +7,22 @@ import { MyValidators } from './../../../utils/validators';
 import { UsersService } from '../../../services/user.service';
 import { CreateUserDTO } from '../../../models/user.model';
 
+
 @Component({
-  selector: 'app-register-form',
-  templateUrl: './register-form.component.html',
-  styleUrls: ['./register-form.component.scss'],
-  standalone: false,
+    selector: 'app-register-form',
+    templateUrl: './register-form.component.html',
+    styleUrls: ['./register-form.component.scss'],
+    imports: [ReactiveFormsModule],
 })
 export class RegisterFormComponent {
+  private fb = inject(FormBuilder);
+  private usersService = inject(UsersService);
+  private router = inject(Router);
+
   form;
   status: 'loading' | 'success' | 'error' | 'init' = 'init';
 
-  constructor(
-    private fb: FormBuilder,
-    private usersService: UsersService,
-    private router: Router,
-  ) {
+  constructor() {
     this.form = this.fb.nonNullable.group(
       {
         name: ['', [Validators.required]],
