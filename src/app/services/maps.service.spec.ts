@@ -20,7 +20,7 @@ describe('MapsService', () => {
     it('should save the center', () => {
       // Arrange
       spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake((successFn) => {
-        const mockGeolocation = {
+        const mockGeolocation: GeolocationPosition = {
           coords: {
             accuracy: 0,
             altitude: 0,
@@ -29,8 +29,10 @@ describe('MapsService', () => {
             latitude: -2,
             longitude: 79,
             speed: 0,
+            toJSON: () => ({}),
           },
           timestamp: 0,
+          toJSON: () => ({}),
         };
         successFn(mockGeolocation);
       });

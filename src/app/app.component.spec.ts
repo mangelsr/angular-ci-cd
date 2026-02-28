@@ -7,12 +7,14 @@ import { RouterLinkDirectiveStub, queryAllByDirective } from '../testing/';
 // OPT2: Use bare studs
 @Component({
   selector: 'app-banner',
+  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class BannerComponentStud {}
 
 @Component({
   selector: 'app-footer',
+  standalone: false,
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 class FooterComponentStud {}

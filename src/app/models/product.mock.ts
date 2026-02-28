@@ -3,17 +3,17 @@ import { Product } from './product.model';
 
 export const generateOneProduct = (): Product => {
   return {
-    id: faker.datatype.uuid(),
+    id: faker.string.uuid(),
     title: faker.commerce.productName(),
-    price: parseInt(faker.commerce.price()),
+    price: faker.number.int({ min: 1, max: 1000 }),
     description: faker.commerce.productDescription(),
     category: {
-      id: faker.datatype.number(),
+      id: faker.number.int(),
       name: faker.commerce.department(),
     },
     images: [
-      faker.image.imageUrl(),
-      faker.image.imageUrl(),
+      faker.image.url(),
+      faker.image.url(),
     ],
   };
 };

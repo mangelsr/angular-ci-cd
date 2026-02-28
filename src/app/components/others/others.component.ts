@@ -5,7 +5,8 @@ import { ProductsService } from 'src/app/services/products.service';
 @Component({
   selector: 'app-others',
   templateUrl: './others.component.html',
-  styleUrls: ['./others.component.scss']
+  styleUrls: ['./others.component.scss'],
+  standalone: false
 })
 export class OthersComponent implements OnInit {
 

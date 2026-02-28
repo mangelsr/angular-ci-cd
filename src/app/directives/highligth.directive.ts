@@ -1,7 +1,8 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Directive({
-  selector: '[appHighligth]'
+  selector: '[appHighligth]',
+  standalone: false
 })
 export class HighligthDirective implements OnChanges {
 

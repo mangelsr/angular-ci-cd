@@ -80,8 +80,8 @@
               : ''
           "
         />
-        <ng-container *ngIf="confirmPasswordField?.touched && form?.errors">
-          <small *ngIf="form?.hasError('match_password')">*Not matching</small>
+        <ng-container *ngIf="confirmPasswordField?.touched && form.errors">
+          <small *ngIf="form.hasError('match_password')">*Not matching</small>
         </ng-container>
       </label>
 

@@ -13,6 +13,7 @@ import { query, queryAll, queryAllByDirective } from '../../testing';
     <p>Another paragraph</p>
     <input [(ngModel)]="color" [appHighligth]="color" />
   `,
+  standalone: false,
 })
 class HostComponent {
   color = 'red';

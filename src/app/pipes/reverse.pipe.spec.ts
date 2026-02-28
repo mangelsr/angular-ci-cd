@@ -11,6 +11,7 @@ import { ReversePipe } from './reverse.pipe';
     <input [(ngModel)]="text">
     <p>{{ text | reverse }}</p>
   `,
+  standalone: false,
 })
 class HostComponent {
   text = '';

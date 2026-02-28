@@ -4,7 +4,8 @@ import { Person } from 'src/app/models/person.model';
 @Component({
   selector: 'app-people',
   templateUrl: './people.component.html',
-  styleUrls: ['./people.component.scss']
+  styleUrls: ['./people.component.scss'],
+  standalone: false
 })
 export class PeopleComponent {
 

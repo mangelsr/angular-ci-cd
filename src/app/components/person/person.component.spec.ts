@@ -20,7 +20,6 @@ describe('PersonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PersonComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -105,7 +104,7 @@ describe('PersonComponent', () => {
 
 @Component({
   template: '<app-person [person]="person" (onselected)="onselected($event)"></app-person>',
-
+  standalone: false,
 })
 class HostComponent {
   person = new Person('Miguel', 'Sanchez', 25, 95, 1.8)
